@@ -1,6 +1,8 @@
 (function($) {
   
   "use strict";
+
+  
   
   /* Page Loader active
   ========================================================*/
@@ -46,6 +48,19 @@
         itemsMobile: [479, 1]
       });
 
+      $('document').ready(function () {
+        $("#imgload").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgshow').attr('src', e.target.result);
+                }
+                console.log(this.files[0].readAsDataURL());
+                getAPIFile(reader.readAsDataURL(this.files[0]));
+            }
+        });
+        });
+
 
 
   /* 
@@ -58,6 +73,28 @@
             $('.header-top-area').removeClass('menu-bg');
         }
     });
+
+    document.getElementById('upload').addEventListener("click", function(e) {
+      // add array here call random and pass it into the getAPI function
+      var items = ["https://live.staticflickr.com/65535/48891486207_0ae6acf95e_q.jpg", "https://live.staticflickr.com/65535/48891307736_4e872f5a3b_m.jpg", "https://live.staticflickr.com/65535/48891485992_7fdd327308_m.jpg"]
+      var item = items[Math.floor(Math.random()*items.length)];
+      var img = canvas.toDataURL("image/png");
+      // document.write('<img src="'+img+'"/>');
+      // getAPI(item);
+      getAPIFile(img);
+    }, false);
+
+    document.getElementById('clear').addEventListener("click", function(e) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+
+      let div = document.getElementById('results');
+      div.innerHTML = "";
+
+      let para = document.createElement("p");
+      div.appendChild(para);
+    }, false);
 
   /* 
  VIDEO POP-UP
@@ -245,54 +282,77 @@ document.body.addEventListener("touchmove", function (e) {
   }
 }, false);
 
-document.body.addEventListener("click", function(e) {
+
+function getAPI(img) {
   var params = {
-    // Request parameters
-    "application": ""
+      // Request parameters
+      "application": ""
+  };
+
+  $.ajax({
+      url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration3/url",
+      beforeSend: function(xhrObj){
+          // Request headers
+          xhrObj.setRequestHeader("Prediction-Key","78a3f4d1ae95492680685c14da50480d");
+          xhrObj.setRequestHeader("Content-Type","application/json");
+          xhrObj.setRequestHeader("Prediction-key","78a3f4d1ae95492680685c14da50480d");
+      },
+      type: "POST",
+      // Request body
+      data: `{"Url": "${img}"}`,
+  })
+  .done(function(data) {
+    let healthyPercentage = data.predictions[0].probability;
+    let parkisonsPercentage = data.predictions[1].probability;
+    let div = document.getElementById('results');
+    div.innerHTML = "";
+
+    let para = document.createElement("p");
+    if (healthyPercentage <= parkisonsPercentage) {
+      para.innerHTML = "You're exhibiting symptoms of Parkison's";
+    } else {
+    para.innerHTML = "Our Model shows you're healthy ";
+    }
+    div.appendChild(para);
+  })
+  .fail(function() {
+      alert("error");
+  });
 };
 
-$.ajax({
-    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration1/url?" + $.param(params),
-    beforeSend: function(xhrObj){
-        // Request headers
-        xhrObj.setRequestHeader("Prediction-Key","78a3f4d1ae95492680685c14da50480d");
-        xhrObj.setRequestHeader("Content-Type","application/json");
-        xhrObj.setRequestHeader("Prediction-key","78a3f4d1ae95492680685c14da50480d");
-    },
-    type: "POST",
-    // Request body
-    data: '{"Url": "http://wwwp.fc.unesp.br/~papa/pub/datasets/Handpd/0068.jpg"}',
-})
-.done(function(data) {
-    console.log(data);
-})
-.fail(function() {
-    alert("error");
-});    
-}, false);
+function getAPIFile(img) {
+  var params = {
+      // Request parameters
+      "application": ""
+  };
+  console.log(img.replace("data:", ""));
+  $.ajax({
+      url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration3/image",
+      beforeSend: function(xhrObj){
+          // Request headers
+          xhrObj.setRequestHeader("Prediction-Key","78a3f4d1ae95492680685c14da50480d");
+          xhrObj.setRequestHeader("Content-Type","application/octet-stream");
+          xhrObj.setRequestHeader("Prediction-key","78a3f4d1ae95492680685c14da50480d");
+      },
+      type: "POST",
+      // Request body
+      data: img.replace("data:", ""),
+  })
+  .done(function(data) {
+    let healthyPercentage = data.predictions[0].probability;
+    let parkisonsPercentage = data.predictions[1].probability;
+    let div = document.getElementById('results');
+    div.innerHTML = "";
 
-// $(function() {
-//   var params = {
-//       // Request parameters
-//       "application": ""
-//   };
-
-//   $.ajax({
-//       url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration1/url?" + $.param(params),
-//       beforeSend: function(xhrObj){
-//           // Request headers
-//           xhrObj.setRequestHeader("Prediction-Key","78a3f4d1ae95492680685c14da50480d");
-//           xhrObj.setRequestHeader("Content-Type","application/json");
-//           xhrObj.setRequestHeader("Prediction-key","78a3f4d1ae95492680685c14da50480d");
-//       },
-//       type: "POST",
-//       // Request body
-//       data: '{"Url": "http://wwwp.fc.unesp.br/~papa/pub/datasets/Handpd/0068.jpg"}',
-//   })
-//   .done(function(data) {
-//       console.log(data);
-//   })
-//   .fail(function() {
-//       alert("error");
-//   });
-// });
+    let para = document.createElement("p");
+    if (healthyPercentage <= parkisonsPercentage) {
+      para.innerHTML = "You're exhibiting symptoms of Parkison's";
+    } else {
+    para.innerHTML = "Our Model shows you're healthy ";
+    }
+    div.appendChild(para);
+  })
+  .fail(function() {
+      alert("error");
+  });
+};

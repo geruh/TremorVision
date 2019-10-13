@@ -1,19 +1,5 @@
-var canvas = document.getElementsByTagName("canvas")[0];
-var context = canvas.getContext("2d");
+// Get a reference to the storage service, which is used to create references in your storage bucket
+var storage = firebase.storage();
 
-var mouseClicked = false, mouseReleased = true;
-document.addEventListener("click", onMouseClick, false);
-document.addEventListener("mousemove", onMouseMove, false);
-
-function onMouseClick(e) {
-  mouseClicked = !mouseClicked;
-}
-function onMouseMove(e) {
-  if (mouseClicked) {
-      context.beginPath();
-      context.arc(e.clientX, e.clientY, 7.5, 0, Math.PI * 2, false);
-      context.lineWidth = 5;
-      context.strokeStyle = "#fff";
-      context.stroke();
-  }
-}
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
