@@ -295,7 +295,7 @@ function getAPI(img) {
   };
 
   $.ajax({
-    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration6/url",
+    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/url",
     beforeSend: function (xhrObj) {
       // Request headers
       xhrObj.setRequestHeader("Prediction-Key", "78a3f4d1ae95492680685c14da50480d");
@@ -333,7 +333,7 @@ function getAPIFile(img) {
   };
 
   $.ajax({
-    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration6/image",
+    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/image",
     beforeSend: function (xhrObj) {
       // Request headers
       xhrObj.setRequestHeader("Prediction-Key", "78a3f4d1ae95492680685c14da50480d");
@@ -346,18 +346,23 @@ function getAPIFile(img) {
     data: makeblob(img),
   })
     .done(function (data) {
+      let parkisonsPercentage;
+      let healthyPercentage;
+      if (data.predictions[0].tagName === 'parkinson') {
+        parkisonsPercentage = data.predictions[0].probability;
+        healthyPercentage = data.predictions[1].probability;
 
-      console.log(data);
-      let healthyPercentage = data.predictions[0].probability;
-      let parkisonsPercentage = data.predictions[1].probability;
+      } else {
+        healthyPercentage = data.predictions[0].probability;
+        parkisonsPercentage = data.predictions[1].probability;
+      }
       let div = document.getElementById('results');
       div.innerHTML = "";
-
       let para = document.createElement("p");
-      if (healthyPercentage >= parkisonsPercentage) {
+      if (healthyPercentage <= parkisonsPercentage) {
         para.innerHTML = "You're exhibiting symptoms of Parkison's";
       } else {
-        para.innerHTML = "Our Model shows you're healthy ";
+        para.innerHTML = "Our model shows you're healthy ";
       }
       div.appendChild(para);
     })
