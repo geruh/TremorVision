@@ -24,6 +24,12 @@ body {
 html {
   overflow-x: hidden; }
 
+#sig-canvas {
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/9/97/Spiral_image_17.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
 p {
   font-size: 14px;
   color: #5e629c;
@@ -39,6 +45,11 @@ a {
   -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out; }
+
+
+    body.noScroll { /* ...or body.dialogShowing */
+      overflow: hidden;
+    }
 
 h1, h2, h3, h4, h5 {
   font-family: 'Poppins', sans-serif;
