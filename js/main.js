@@ -222,6 +222,8 @@ window.requestAnimFrame = (function (callback) {
     };
 })();
 
+$.ajaxSetup({ cache: false });
+
 // Draw to the canvas
 function renderCanvas() {
   if (drawing) {
