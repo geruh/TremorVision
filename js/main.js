@@ -86,7 +86,7 @@
     // var item = items[Math.floor(Math.random()*items.length)];
     var img = canvas.toDataURL("image/png");
     getAPIFile(img);
-    download();
+    // download();
   }, false);
 
   document.getElementById('clear').addEventListener("click", function (e) {
@@ -222,8 +222,6 @@ window.requestAnimFrame = (function (callback) {
     };
 })();
 
-$.ajaxSetup({ cache: false });
-
 // Draw to the canvas
 function renderCanvas() {
   if (drawing) {
@@ -296,7 +294,7 @@ function getAPI(img) {
     "application": ""
   };
 
-  $(function () {$.ajax({
+  $.ajax({
     url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/url",
     beforeSend: function (xhrObj) {
       // Request headers
@@ -326,7 +324,6 @@ function getAPI(img) {
     .fail(function () {
       alert("error");
     });
-});
 };
 
 function getAPIFile(img) {
