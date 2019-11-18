@@ -296,7 +296,7 @@ function getAPI(img) {
     "application": ""
   };
 
-  $.ajax({
+  $(function () {$.ajax({
     url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/url",
     beforeSend: function (xhrObj) {
       // Request headers
@@ -326,6 +326,7 @@ function getAPI(img) {
     .fail(function () {
       alert("error");
     });
+});
 };
 
 function getAPIFile(img) {
