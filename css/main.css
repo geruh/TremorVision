@@ -30,11 +30,30 @@ html {
   background-repeat: no-repeat;
 }
 
+.loadingImage {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+/* canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 400px;
+} */
+
 p {
   font-size: 14px;
   color: #5e629c;
   line-height: 26px;
   margin-bottom: 0; }
+
+.resultText {
+  font-size: 18px;
+}
 
 a:hover, a:focus {
   color: #000; }

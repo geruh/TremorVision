@@ -288,50 +288,49 @@ document.body.addEventListener("touchmove", function (e) {
 }, false);
 
 
-function getAPI(img) {
-  var params = {
-    // Request parameters
-    "application": ""
-  };
+// function getAPI(img) {
+//   var params = {
+//     // Request parameters
+//     "application": ""
+//   };
 
-  $.ajax({
-    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/url",
-    beforeSend: function (xhrObj) {
-      // Request headers
-      xhrObj.setRequestHeader("Prediction-Key", "78a3f4d1ae95492680685c14da50480d");
-      xhrObj.setRequestHeader("Content-Type", "application/json");
-      xhrObj.setRequestHeader("Prediction-key", "78a3f4d1ae95492680685c14da50480d");
-    },
-    type: "POST",
-    processData: false,
-    // Request body
-    data: `{"Url": "${img}"}`,
-  })
-    .done(function (data) {
-      let healthyPercentage = data.predictions[0].probability;
-      let parkisonsPercentage = data.predictions[1].probability;
-      let div = document.getElementById('results');
-      div.innerHTML = "";
-
-      let para = document.createElement("p");
-      if (healthyPercentage <= parkisonsPercentage) {
-        para.innerHTML = "You're exhibiting symptoms of Parkison's";
-      } else {
-        para.innerHTML = "Our Model shows you're healthy ";
-      }
-      div.appendChild(para);
-    })
-    .fail(function () {
-      alert("error");
-    });
-};
+//   $.ajax({
+//     url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/url",
+//     beforeSend: function (xhrObj) {
+//       // Request headers
+//       xhrObj.setRequestHeader("Prediction-Key", "78a3f4d1ae95492680685c14da50480d");
+//       xhrObj.setRequestHeader("Content-Type", "application/json");
+//       xhrObj.setRequestHeader("Prediction-key", "78a3f4d1ae95492680685c14da50480d");
+//     },
+//     type: "POST",
+//     processData: false,
+//     // Request body
+//     data: `{"Url": "${img}"}`,
+//   })
+//     .done(function (data) {
+//       let healthyPercentage = data.predictions[0].probability;
+//       let parkisonsPercentage = data.predictions[1].probability;
+//       let div = document.getElementById('results');
+//       div.innerHTML = "";
+//       let para = document.createElement("p");
+//       if (healthyPercentage <= parkisonsPercentage) {
+//         para.innerHTML = "You're exhibiting symptoms of Parkison's";
+//       } else {
+//         para.innerHTML = "Our Model shows you're healthy ";
+//       }
+//       div.appendChild(para);
+//     })
+//     .fail(function () {
+//       alert("error");
+//     });
+// };
 
 function getAPIFile(img) {
   var params = {
     // Request parameters
     "application": ""
   };
-
+  $('.loaderImage').show();
   $.ajax({
     url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/image",
     beforeSend: function (xhrObj) {
@@ -346,12 +345,12 @@ function getAPIFile(img) {
     data: makeblob(img),
   })
     .done(function (data) {
+      $('.loaderImage').hide();
       let parkisonsPercentage;
       let healthyPercentage;
       if (data.predictions[0].tagName === 'parkinson') {
         parkisonsPercentage = data.predictions[0].probability;
         healthyPercentage = data.predictions[1].probability;
-
       } else {
         healthyPercentage = data.predictions[0].probability;
         parkisonsPercentage = data.predictions[1].probability;
@@ -359,14 +358,19 @@ function getAPIFile(img) {
       let div = document.getElementById('results');
       div.innerHTML = "";
       let para = document.createElement("p");
+      let res = document.createElement('h4');
+      res.innerHTML = 'Result: ';
+      div.appendChild(res);
       if (healthyPercentage <= parkisonsPercentage) {
-        para.innerHTML = "You're exhibiting symptoms of Parkison's";
+        para.innerHTML = `You're exhibiting symptoms of Parkison's with a probability of ${(parkisonsPercentage * 100).toFixed(1)}%!`;
       } else {
-        para.innerHTML = "Our model shows you're healthy ";
+        para.innerHTML = `Our model shows you're healthy with a probability of ${(healthyPercentage * 100).toFixed(1)}%!`;
       }
+      para.className = "resultText";
       div.appendChild(para);
     })
     .fail(function () {
+      $('.loaderImage').hide();
       alert("error");
     });
 };
