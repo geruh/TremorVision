@@ -362,9 +362,9 @@ function getAPIFile(img) {
       res.innerHTML = 'Result: ';
       div.appendChild(res);
       if (healthyPercentage <= parkisonsPercentage) {
-        para.innerHTML = `You're exhibiting symptoms of Parkison's with a probability of ${(parkisonsPercentage * 100).toFixed(1)}%!`;
+        para.innerHTML = `Your spiral is ${(parkisonsPercentage * 100).toFixed(1)}% similar to known Parkinson's spirals`;
       } else {
-        para.innerHTML = `Our model shows you're healthy with a probability of ${(healthyPercentage * 100).toFixed(1)}%!`;
+        para.innerHTML = `Your spiral is ${(healthyPercentage * 100).toFixed(1)}% similar to known healthy spirals`;
       }
       para.className = "resultText";
       div.appendChild(para);
