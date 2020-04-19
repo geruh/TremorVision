@@ -345,6 +345,7 @@ function getAPIFile(img) {
     data: makeblob(img),
   })
     .done(function (data) {
+      console.log(data);
       $('.loaderImage').hide();
       let parkisonsPercentage;
       let healthyPercentage;
