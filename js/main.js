@@ -347,12 +347,12 @@ function getAPIFile(img) {
       $('.loaderImage').hide();
       let parkisonsPercentage;
       let healthyPercentage;
-      if (data.predictions[0].tagName === 'parkinson') {
-        parkisonsPercentage = data.predictions[0].probability;
-        healthyPercentage = data.predictions[1].probability;
+      if (data.predictions[0].tagName.toLowerCase() === 'parkinson') {
+            parkisonsPercentage = data.predictions[0].probability;
+            healthyPercentage = data.predictions[1].probability;
       } else {
-        healthyPercentage = data.predictions[0].probability;
-        parkisonsPercentage = data.predictions[1].probability;
+          healthyPercentage = data.predictions[0].probability;
+          parkisonsPercentage = data.predictions[1].probability;
       }
       let div = document.getElementById('results');
       div.innerHTML = "";
