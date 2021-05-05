@@ -332,12 +332,11 @@ function getAPIFile(img) {
   };
   $('.loaderImage').show();
   $.ajax({
-    url: "https://westus2.api.cognitive.microsoft.com/customvision/v3.0/Prediction/6fede207-de99-4fbe-8f04-44a2154495ad/classify/iterations/Iteration8/image",
+    url: "https://southcentralus.api.cognitive.microsoft.com/customvision/v3.1/Prediction/c6ee0724-e2fc-446c-9dfd-f1cef6f40479/classify/iterations/Iteration4/image",
     beforeSend: function (xhrObj) {
       // Request headers
-      xhrObj.setRequestHeader("Prediction-Key", "78a3f4d1ae95492680685c14da50480d");
+      xhrObj.setRequestHeader("Prediction-Key", "89884caaab6a49b08c7988717547d4f8");
       xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
-      xhrObj.setRequestHeader("Prediction-key", "78a3f4d1ae95492680685c14da50480d");
     },
     type: "POST",
     // Request body
